@@ -1,5 +1,15 @@
 import { firebaseSetDoc } from "@/app/firebase/firebaseFunctions";
 
+const GET = (req) => {
+
+    
+    const auth = req.headers.get('Authorization')
+
+    
+    
+    return new Response(JSON.stringify(auth))
+}
+
 
 const POST = async (req) => {
     
@@ -13,5 +23,6 @@ const POST = async (req) => {
 
 
 export {
-    POST
+    POST,
+    GET
 }

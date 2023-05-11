@@ -22,6 +22,7 @@ const Form = () => {
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
+               
 
             },
             body: JSON.stringify(values),
@@ -32,9 +33,9 @@ const Form = () => {
 
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className='border border-red-500 flex flex-col'>
             <label htmlFor="email">Email</label>
-            <input
+            <input className='p-2 bg-gray-300 rounded-md'
                 id='email'
                 type="email"
                 {...register("email", {
@@ -47,7 +48,7 @@ const Form = () => {
             />
             {errors.email && errors.email.message}
             <label htmlFor="username">Username</label>    
-            <input
+            <input className='p-2 bg-gray-300 rounded-md'
                 {...register("username", {
                     validate: value => value !== "admin" || "Nice try!"
                 })}

@@ -2,28 +2,28 @@
 
 import { useState } from "react"
 
-const Button = () => {
 
- 
+const Button = ({url}) => {
+  const [response, setResponse] = useState()
 
-    const handleClick = async () => {
-       const data = await fetch('/api/hello', {
-            method : 'POST',
-            headers : {
-              'Content-Type' : 'application/json',
-            },
-            mode: 'cors',
-            body: JSON.stringify({message : 'hola'}),
-            
-          })
-        
-   
-     }
-   
+  const handleClick = async () => {
+    const data = await fetch(url, {
+      headers: {
+        'Authorization': 'Bearer ' + 1,
+
+      },
+    })
+    const response = await data.json()
+    setResponse(response)
+  }
+
+
   return (
-    <><button onClick={handleClick} className='text-black p-2 bg-white'>Make Fetch</button>
-    <div>{data}</div>
-    </>
+    <div>
+      <button onClick={handleClick} className="py-2 px-2 bg-green-200 rounded-md">Hacer Peticion Get</button>
+
+      <h1> {response && response}</h1>
+    </div>
   )
 }
 
