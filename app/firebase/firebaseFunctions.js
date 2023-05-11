@@ -1,17 +1,24 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebaseDb";
 
-const AddDoc = async (data) => {
-    const { name, lastName } = data
+const firebaseSetDoc = async (data) => {
+    const message = { message: 'Registro hecho correctamente' }
 
-    await setDoc(doc(db, 'Users', name), {
-        name,
-        lastName
-    })
+    const dataDot = await getDoc(doc(db, 'users', data.username))
+    const response = dataDot.data()
+
+    if (dataDot.exists()) {
+        message.message = 'Usuario ya registrado'
+    } else {
+        await setDoc(doc(db, 'users', data.username), data)
+
+    }
+
+    return message
 
 }
 
 export {
-    AddDoc
+    firebaseSetDoc
 }
 

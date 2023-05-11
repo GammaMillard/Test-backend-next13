@@ -1,53 +1,61 @@
 'use client'
+import { addDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 const Form = () => {
-
+    const { handleSubmit, register, formState: { errors } } = useForm();
     const [inputs, setIntputs] = useState({
         name: '',
         lastName: '',
     })
     const [response, setResponse] = useState()
 
-    const handleOnChange = (e) => {
-        setIntputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
-    }
+    
 
 
-    const handleSubmit = async(e) => {
-        e.preventDefault()
+
+    const onSubmit = async (values) => {
+        console.log(values);
 
         const data = await fetch('/api/users', {
-            method : 'POST',
+            method: 'POST',
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
-                
+
             },
-            body: JSON.stringify(inputs),
+            body: JSON.stringify(values),
 
         })
-
-        setResponse(data)
+        const response = await data.json()
+        setResponse(response)
 
     }
     return (
-        <div>
-            <form action="" onSubmit={handleSubmit}>
-                <label htmlFor="name">Nombre :</label>
-                <input onChange={handleOnChange} type="text" name="name" id="name" value={inputs.name} />
-                <label htmlFor="lastName">Last Name : </label>
-                <input onChange={handleOnChange} type="text" name="lastName" id="lastName" value={inputs.lastName} />
-                <input type="submit" value={'Enviar info'} className="cursor-pointer border border-red-500" />
-            </form>
-
-
-            {
-                response && <div>
-                    <p>Respuesta :</p>
-                    <p>{response}</p>∫
-                </div>
-            }
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor="email">Email</label>
+            <input
+                id='email'
+                type="email"
+                {...register("email", {
+                    required: "Required",
+                    pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                        message: "invalid email address"
+                    }
+                })}
+            />
+            {errors.email && errors.email.message}
+            <label htmlFor="username">Username</label>    
+            <input
+                {...register("username", {
+                    validate: value => value !== "admin" || "Nice try!"
+                })}
+            />
+            {errors.username && errors.username.message}
+                {response && response.message}
+            <button type="submit">Submit</button>
+        </form>
 
     )
 }
