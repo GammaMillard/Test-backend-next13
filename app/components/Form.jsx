@@ -1,35 +1,34 @@
 'use client'
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 import { addDoc } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { provider } from '../firebase/firebaseDb'
+
+const auth = getAuth()
+
 const Form = () => {
     const { handleSubmit, register, formState: { errors } } = useForm();
-    const [inputs, setIntputs] = useState({
-        name: '',
-        lastName: '',
-    })
+   
     const [response, setResponse] = useState()
 
-    
-
-
-
     const onSubmit = async (values) => {
-        console.log(values);
+        signInWithPopup(auth, provider)
+            .then( res => {
+                const credential = GoogleAuthProvider.credentialFromResult(res)
+                const token = credential.accessToken
+                const user = res.user
+                console.log(credential, token, user);
+            })
+            .catch( err => {
+                const errorCode = err.code
+                const errorMessage = err.message
+                const email = err.customData.email
+                const credential = GoogleAuthProvider.credentialFromError(err)
+                console.log(errorCode, errorMessage, email, credential);
+            })
 
-        const data = await fetch('/api/users', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-               
-
-            },
-            body: JSON.stringify(values),
-
-        })
-        const response = await data.json()
-        setResponse(response)
+       
 
     }
     return (

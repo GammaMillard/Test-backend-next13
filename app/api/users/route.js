@@ -6,7 +6,6 @@ const GET = (req) => {
     const auth = req.headers.get('Authorization')
 
     
-    
     return new Response(JSON.stringify(auth))
 }
 

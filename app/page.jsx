@@ -3,6 +3,8 @@
 
 import Button from "./components/Button"
 import Form from "./components/Form"
+import GoogleButton from "./components/GoogleButton"
+import SignOut from "./components/SignOut"
 
 
 export default function Home() {
@@ -16,9 +18,8 @@ export default function Home() {
           <h1 className="text-3xl ">TESTING ROUTES</h1>
 
           <Button url={'/api/users'}/>
-          <Button url={'/api/users'}/>
-          <Button url={'/api/users'}/>
-
+          <GoogleButton />
+          <SignOut/>
           <Form />
 
         </div>

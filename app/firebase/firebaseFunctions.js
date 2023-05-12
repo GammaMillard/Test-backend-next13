@@ -1,7 +1,7 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "./firebaseDb";
 
-const firebaseSetDoc = async (data) => {
+const setDocFirebase = async (data) => {
     const message = { message: 'Registro hecho correctamente' }
 
     const dataDot = await getDoc(doc(db, 'users', data.username))
@@ -18,7 +18,20 @@ const firebaseSetDoc = async (data) => {
 
 }
 
+const getDocsFirebase = async(collec) => {
+    
+    const data = await getDocs(collection(db, collec))
+    const results = []
+    
+    data.forEach(doc => {
+        results.push(doc.data())
+    })
+    return results
+}
+
+
 export {
-    firebaseSetDoc
+    setDocFirebase,
+    getDocsFirebase
 }
 
